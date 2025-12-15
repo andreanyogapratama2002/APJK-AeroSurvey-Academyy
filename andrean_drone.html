@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APJK AeroSurvey Academy - Pelatihan Drone Pertanahan</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variabel Warna Utama */
+        :root {
+            --dark-blue: #003366; 
+            --light-blue: #6cb4d1; /* WARNA SIERRA BLUE BARU */
+            --white: #FFFFFF;
+            --grey-bg: #e0f2f7; /* WARNA LATAR BELAKANG HALAMAN BARU */
+            --accent-yellow: #ffc107; 
+            --button-color: #28a745; 
+            --cta-color: #dc3545; 
+            --contact-icon-color: #6cb4d1; /* WARNA SIERRA BLUE BARU */
+        }
+
+        /* Menambahkan smooth scroll untuk pengalaman pengguna yang lebih baik */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* --- STYLING UTAMA: FONT MONTSERRAT --- */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--grey-bg);
+            color: #333;
+        }
+
+        /* --- STYLING HERO SECTION (HEADER) DENGAN GAMBAR DAN OVERLAY --- */
+        header {
+            color: var(--white);
+            padding: 0;
+            text-align: center;
+            /* Placeholder: Asumsikan ada gambar drone di latar */
+            background: var(--dark-blue) url('drone.jpg') no-repeat center center; 
+            background-size: cover;
+            position: relative;
+            z-index: 1; 
+        }
+        
+        /* Overlay semi-transparan untuk meningkatkan keterbacaan teks putih */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 51, 102, 0.75); /* Dark Blue dengan 55% opacity */
+            z-index: -1; 
+        }
+        
+        /* Navigasi */
+        nav {
+            background-color: rgba(0, 51, 102, 0.9); 
+            border-bottom: 3px solid var(--light-blue);
+            padding: 10px 0; /* Menambah padding agar tombol Login terlihat lebih baik */
+            position: sticky; 
+            top: 0;
+            z-index: 1000; 
+        }
+
+        .nav-container {
+            width: 85%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 25px;
+            transition: transform 0.3s ease-out; 
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 5px 0;
+            display: block; 
+            align-items: center;
+            /* ANIMASI MENU BARU */
+            transition: color 0.3s, border-bottom 0.3s, transform 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-yellow);
+            border-bottom: 2px solid var(--accent-yellow);
+            transform: translateY(-2px);
+        }
+        
+        #contact-link, #about-link, #login-link-mobile, #workflow-link { /* Ditambahkan #workflow-link */
+            cursor: pointer;
+        }
+
+        .nav-links span {
+            display: none; 
+        }
+        
+        /* Menu Toggle (Hamburger) - Awalnya Tersembunyi di Desktop */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--white);
+        }
+
+        /* Tombol Login di Navigasi */
+        .login-btn {
+            background-color: var(--button-color);
+            color: var(--white);
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: #1e7e34;
+            transform: scale(1.05);
+        }
+
+        /* Identitas Usaha & Visi */
+        .header-content {
+            padding: 80px 0 80px 0; 
+            position: relative; 
+            z-index: 2;
+        }
+
+        .header-content h1 {
+            font-size: 3.5em; 
+            margin-bottom: 5px;
+            font-weight: 800; 
+        }
+        
+        /* CTA Utama */
+        .main-cta-btn {
+            display: inline-block;
+            background-color: var(--cta-color); 
+            color: var(--white);
+            padding: 15px 30px;
+            margin-top: 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: 700;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .main-cta-btn:hover {
+            background-color: #b72132;
+            transform: translateY(-3px);
+        }
+        
+        /* --- STYLING EFEK AIR (RIPPLE EFFECT) PADA TOMBOL --- */
+        .main-cta-btn, .login-btn, .submit-btn, .whatsapp-float {
+            position: relative; 
+            overflow: hidden; 
+            z-index: 1; 
+            transition: all 0.4s ease;
+        }
+
+        .main-cta-btn::after, 
+        .login-btn::after, 
+        .submit-btn::after, 
+        .whatsapp-float::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            /* Warna ripple: Putih semi-transparan untuk efek air */
+            background: rgba(255, 255, 255, 0.4); 
+            border-radius: 50%;
+            /* Transisi untuk animasi ripple */
+            transition: width 0.4s, height 0.4s, opacity 0.4s;
+            transform: translate(-50%, -50%); 
+            z-index: -1; 
+            opacity: 0;
+        }
+
+        /* Animasi Ripple Saat Hover */
+        .main-cta-btn:hover::after, 
+        .login-btn:hover::after, 
+        .submit-btn:hover::after, 
+        .whatsapp-float:hover::after {
+            width: 250%; 
+            height: 250%;
+            opacity: 1;
+        }
+        /* --- AKHIR STYLING EFEK AIR --- */
+
+        .slogan {
+            font-style: italic;
+            margin-top: 10px;
+            color: #dcdcdc;
+            font-size: 1.3em;
+            font-weight: 400;
+        }
+        
+        .visi {
+            max-width: 800px;
+            margin: 30px auto 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15); 
+            border-left: 5px solid var(--accent-yellow);
+            text-align: left;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+        
+        /* Kontainer Utama */
+        .container {
+            width: 85%;
+            margin: auto;
+            overflow: hidden;
+            padding: 30px 0;
+        }
+
+        /* --- STYLING MENU PELATIHAN & LATAR BELAKANG --- */
+        #latar-belakang {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        #latar-belakang h2 {
+            color: var(--dark-blue);
+            border-bottom: 3px solid var(--light-blue);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .poin-latar h3 {
+            color: var(--dark-blue);
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .poin-latar h3::before {
+            content: "➡️"; 
+            margin-right: 10px;
+            color: var(--accent-yellow);
+            font-size: 1.2em;
+        }
+
+        /* --- STYLING INSTRUKTUR SECTION --- */
+        #instruktur-section {
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        #instruktur-section h2 {
+            color: var(--dark-blue); 
+            font-size: 2em;
+            font-weight: 800;
+            margin-bottom: 30px;
+            border-bottom: 4px solid var(--accent-yellow);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .instruktur-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .instruktur-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 8px solid var(--dark-blue);
+            text-align: center;
+        }
+
+        .instruktur-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Style H3 di kartu instruktur */
+        .instruktur-card h3 {
+            color: var(--dark-blue);
+            font-weight: 800; 
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.4em;
+        }
+
+        /* Style Gelar Akademik */
+        .instruktur-card .gelar {
+            color: var(--cta-color);
+            font-style: italic;
+            font-weight: 600;
+            margin: 0 0 10px 0; 
+            font-size: 1.0em;
+            display: block; 
+        }
+        
+        /* Style Deskripsi Keahlian */
+        .instruktur-card p {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 15px;
+            line-height: 1.4;
+            text-align: justify;
+        }
+        /* --- AKHIR STYLING INSTRUKTUR SECTION --- */
+
+        /* --- STYLING ALUR PELATIHAN (VERTICAL TIMELINE DI MODAL) --- */
+        .workflow-timeline h3 {
+            color: var(--accent-yellow);
+            font-size: 2em;
+            font-weight: 800;
+            margin-bottom: 40px;
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        .timeline-container-modal {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
+            padding-top: 10px;
+        }
+
+        /* Garis Vertikal Utama */
+        .timeline-container-modal::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: var(--light-blue);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px;
+        }
+
+        .timeline-item-modal {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 40%;
+            margin-bottom: 40px;
+        }
+
+        /* Posisikan item ke Kiri */
+        .timeline-item-modal:nth-child(odd) {
+            left: 0;
+        }
+
+        /* Posisikan item ke Kanan */
+        .timeline-item-modal:nth-child(even) {
+            left: 50%;
+        }
+
+        /* Lingkaran (Dot/Icon) pada Garis */
+        .timeline-item-modal::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -12.5px;
+            background-color: var(--dark-blue);
+            border: 4px solid var(--accent-yellow);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item-modal:nth-child(even)::after {
+            left: -12.5px;
+        }
+
+        /* Konten dalam Item Timeline */
+        .timeline-content-modal {
+            padding: 20px 30px;
+            background-color: rgba(255, 255, 255, 0.9); /* Konten putih transparan agar terlihat elegan di modal */
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--dark-blue);
+            color: #333; /* Pastikan teks di konten timeline terbaca */
+        }
+
+        .timeline-content-modal h4 {
+            margin-top: 0;
+            color: var(--cta-color); /* Warna merah untuk penekanan */
+            font-weight: 700;
+        }
+
+        .timeline-content-modal p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Panah yang mengarah ke Garis Tengah (Kiri) */
+        .timeline-item-modal:nth-child(odd) .timeline-content-modal::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: -10px;
+            border: medium solid var(--dark-blue);
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent rgba(255, 255, 255, 0.9);
+        }
+
+        /* Panah yang mengarah ke Garis Tengah (Kanan) */
+        .timeline-item-modal:nth-child(even) .timeline-content-modal::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: -10px;
+            border: medium solid var(--dark-blue);
+            border-width: 10px 10px 10px 0;
+            border-color: transparent rgba(255, 255, 255, 0.9) transparent transparent;
+        }
+        /* --- AKHIR STYLING ALUR PELATIHAN (VERTICAL TIMELINE DI MODAL) --- */
+        
+        /* Styling untuk Tombol Sertifikat di dalam Modal BARU */
+        .cert-sub-btn {
+            background-color: var(--light-blue); /* Sierra Blue */
+            color: var(--dark-blue);
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.0em;
+            font-weight: 700;
+            text-align: center; /* Diubah menjadi tengah */
+            transition: background-color 0.3s, transform 0.2s, color 0.3s;
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        .cert-sub-btn:hover {
+            background-color: var(--accent-yellow);
+            color: var(--dark-blue);
+            transform: translateY(-2px);
+        }
+        
+        #certificate-info-btn {
+            background-color: var(--dark-blue) !important; /* Agar warnanya biru tua */
+            font-size: 1.1em; 
+            padding: 10px 20px;
+        }
+        
+        #menu-judul {
+            text-align: center;
+            color: var(--dark-blue);
+            margin: 40px 0 20px 0;
+            padding-top: 20px; 
+            margin-top: -20px; 
+            font-weight: 700;
+        }
+
+        #pelatihan-menu {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        #pelatihan-menu li {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border-top: 5px solid var(--light-blue);
+        }
+
+        #pelatihan-menu li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        #pelatihan-menu h3 {
+            color: var(--dark-blue);
+            margin-top: 0;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed #ddd;
+            font-weight: 700;
+        }
+        
+        .footer-cta {
+            text-align: center; 
+            margin-top: 50px; 
+            font-weight: bold; 
+            padding: 20px; 
+            border: 2px solid var(--dark-blue); 
+            background-color: var(--white);
+            color: var(--dark-blue);
+            border-radius: 5px;
+        }
+        
+        /* --- STYLING FOOTER BARU --- */
+        footer {
+            background-color: var(--dark-blue);
+            color: var(--white);
+            padding: 40px 0 20px 0; /* Padding bawah lebih kecil untuk copyright */
+            font-size: 0.9em;
+        }
+
+        .footer-content {
+            width: 85%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-section h4 {
+            color: var(--accent-yellow);
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--light-blue);
+            padding-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section ul li a, .footer-section p a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover, .footer-section p a:hover {
+            color: var(--accent-yellow);
+        }
+
+        .footer-logo h3 {
+            font-size: 1.5em;
+            font-weight: 800;
+            margin-top: 0;
+            color: var(--white);
+        }
+        
+        .footer-logo p {
+            line-height: 1.5;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.15); /* Garis pemisah tipis */
+            padding-top: 20px;
+            margin-top: 40px;
+            font-size: 0.85em;
+        }
+        /* --- AKHIR STYLING FOOTER --- */
+        
+        /* --- STYLING LOADING OVERLAY --- */
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75); /* Hitam semi-transparan */
+            z-index: 10000; /* Lebih tinggi dari modal */
+            display: none; 
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            border-top-color: var(--accent-yellow); 
+            animation: spin 0.8s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        /* --- AKHIR STYLING LOADING OVERLAY --- */
+
+        /* --- STYLING MODAL (LIQUID GLASS/GLASSMORPHISM) --- */
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6); 
+            padding-top: 60px;
+            animation: fadeIn 0.3s;
+        }
+
+        /* Modifikasi Modal Content untuk Glassmorphism */
+        .modal-content {
+            /* EFEK GLASSMORPHISM */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            background-color: rgba(0, 51, 102, 0.7); /* Dark Blue 70% semi-transparan */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Border putih transparan */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            
+            margin: 5% auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 400px; 
+            border-radius: 15px; 
+            animation-name: slideInScale;
+            animation-duration: 0.5s;
+            
+            /* Teks di dalam modal */
+            color: var(--white);
+        }
+        
+        #contactModal .modal-content, 
+        #aboutModal .modal-content,
+        #courseModal .modal-content,
+        #workflowModal .modal-content,
+        #certificateModal .modal-content { /* Ditambahkan #workflowModal dan #certificateModal */
+            max-width: 600px;
+        }
+        
+        .close {
+            color: var(--white); /* Tombol close putih */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--accent-yellow);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        #modal-title, #contact-modal-title, #about-modal-title, #login-modal-title, #workflow-modal-title, #certificate-modal-title {
+            color: var(--accent-yellow); /* Judul menjadi kuning */
+            border-bottom: 2px solid var(--light-blue);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* Styling Form di Modal Login */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--white); /* Label putih */
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9); /* Input field putih semi-transparan */
+            color: #333;
+            border: 1px solid var(--light-blue);
+            border-radius: 4px;
+            box-sizing: border-box; 
+            font-size: 1em;
+        }
+        
+        .submit-btn {
+            background-color: var(--button-color);
+            color: var(--white);
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #1e7e34;
+        }
+        
+        .forgot-password {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: var(--white); /* Teks putih */
+            text-align: center;
+        }
+        
+        .forgot-password a {
+            color: var(--accent-yellow); /* Link kuning */
+            text-decoration: none;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        #about-description {
+            line-height: 1.6;
+            font-size: 1.1em;
+            text-align: justify;
+            padding: 10px;
+            border-left: 3px solid var(--accent-yellow);
+            background-color: rgba(255, 255, 255, 0.1); /* Background transparan */
+        }
+        
+        .contact-info {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2); /* Border putih transparan */
+        }
+
+        .contact-info span {
+            font-size: 1.5em;
+            margin-right: 15px;
+            color: var(--light-blue); /* Ikon Sierra Blue BARU */
+        }
+
+        .contact-info p {
+            margin: 0;
+            font-size: 1.0em;
+            word-break: break-all;
+            flex: 1;
+        }
+        
+        #modal-price-range {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: var(--accent-yellow);
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        #modal-estimated-cost {
+            font-size: 1.2em;
+            color: var(--white);
+            margin-top: 5px;
+        }
+
+        .modal-details {
+            margin-top: 15px;
+            padding: 15px;
+            border-left: 5px solid var(--accent-yellow);
+            background-color: rgba(255, 255, 255, 0.1); /* Background transparan */
+            font-size: 0.9em;
+        }
+        
+        /* Animasi */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInScale {
+            from { opacity: 0; transform: translateY(-50px) scale(0.8); } 
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        /* --- MEDIA QUERIES (RESPONSIVITAS MOBILE) --- */
+        @media (max-width: 768px) {
+            .nav-container {
+                width: 90%;
+            }
+            /* Menampilkan hamburger */
+            .menu-toggle {
+                display: block;
+            }
+            
+            /* Sembunyikan tombol login desktop di mobile */
+            #login-link-desktop {
+                display: none;
+            }
+
+            /* Atur tampilan menu mobile (di luar layar) */
+            .nav-links {
+                position: absolute;
+                top: 50px; 
+                left: 0;
+                right: 0;
+                background-color: rgba(0, 51, 102, 0.98);
+                flex-direction: column;
+                padding: 10px 0;
+                transform: translateY(-200%); 
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+                width: 100%;
+                text-align: center;
+            }
+            /* Tampilkan menu saat class 'open' ditambahkan */
+            .nav-links.open {
+                transform: translateY(0); 
+            }
+            .nav-links a {
+                padding: 10px 20px;
+                width: auto;
+                text-align: left;
+                border-bottom: none;
+                /* Nonaktifkan transform hover di mobile saat menu terbuka */
+                transform: none !important;
+            }
+            .nav-links a:hover {
+                border-bottom: none;
+                transform: none !important;
+            }
+            
+            /* Styling khusus untuk Login link di menu mobile */
+            #login-link-mobile {
+                width: 90%;
+                margin: 10px auto;
+                text-align: center;
+                display: block !important;
+            }
+
+            /* Header */
+            .header-content h1 {
+                font-size: 2.2em;
+            }
+            .slogan {
+                font-size: 1.1em;
+            }
+            .main-cta-btn {
+                font-size: 1.1em;
+                padding: 12px 25px;
+            }
+
+            /* Kontainer Utama */
+            .container {
+                width: 90%;
+            }
+
+            /* Modals */
+            .modal-content {
+                margin: 20% auto;
+                width: 90%;
+            }
+            
+            /* Instruktor Section Mobile Tweak */
+            .instruktur-card {
+                transform: none !important;
+            }
+            .instruktur-card:hover {
+                transform: translateY(-4px) scale(1.01) !important;
+            }
+            
+            /* Responsive adjustments for footer */
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .footer-section {
+                min-width: 100%;
+                text-align: center;
+            }
+            .footer-section h4 {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+            .footer-section ul, .footer-section p {
+                text-align: center;
+            }
+            .footer-section ul li a, .footer-section p a {
+                display: block; /* Memastikan link kontak di mobile menjadi block */
+            }
+            
+            /* Responsifitas Alur Pelatihan untuk Layar Kecil (DI MODAL) */
+            .timeline-container-modal::after {
+                left: 20px; 
+            }
+
+            .timeline-item-modal {
+                width: 100%;
+                padding-left: 60px; 
+                padding-right: 20px;
+                left: 0; 
+            }
+
+            .timeline-item-modal::after {
+                left: 15px;
+                right: auto; 
+            }
+            
+            .timeline-item-modal:nth-child(even)::after {
+                left: 15px; 
+            }
+            
+            /* Panah konten di mobile selalu ke kiri */
+            .timeline-item-modal .timeline-content-modal::before {
+                content: " ";
+                height: 0;
+                position: absolute;
+                top: 22px;
+                width: 0;
+                z-index: 1;
+                left: -10px; 
+                border: medium solid var(--dark-blue);
+                border-width: 10px 10px 10px 0;
+                border-color: transparent rgba(255, 255, 255, 0.9) transparent transparent;
+            }
+            
+            .timeline-item-modal:nth-child(odd) .timeline-content-modal::before {
+                right: auto; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="menu-toggle" id="menuToggle">☰</div> 
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a id="workflow-link" href="#">Beranda</a></li> 
+                    <li><a href="#menu-judul">Katalog</a></li>
+                    <li><a id="about-link">Tentang Kami</a></li> 
+                    <li><a id="contact-link">Contact</a></li>
+                </ul>
+                
+                <a id="login-link-desktop" href="#" class="login-btn">Login</a>
+            </div>
+        </nav>
+        
+        <div class="header-content">
+            <h1>APJK AeroSurvey Academy </h1>
+            <p class="slogan">"Mencetak Operator Drone Bersertifikat untuk Percepatan Layanan Pertanahan."</p>
+            
+            <a href="#menu-judul" class="main-cta-btn">Lihat Katalog Pelatihan & Daftar Sekarang!</a>
+
+            <div class="visi">
+                <p><strong>Visi:</strong> Menjadi penyedia layanan edukasi dan sertifikasi drone terdepan di Indonesia, khususnya dalam mendukung modernisasi pengukuran dan pemetaan di sektor pertanahan.</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <section id="latar-belakang">
+            <h2>MENGAPA MEMILIH DRONE UNTUK SURVEI PERTANAHAN?</h2>
+            
+            <div class="poin-latar">
+                <h3>1. Tuntutan Percepatan Layanan Pertanahan</h3>
+                <p>Kementerian ATR/BPN menargetkan penyelesaian Pendaftaran Tanah Sistematis Lengkap (PTSL). Metode pengukuran konvensional (terestris) memakan waktu lama. Solusi Drone: Memungkinkan pengumpulan data foto udara (fotogrametri) untuk area luas hanya dalam hitungan jam/hari.</p>
+            </div>
+
+            <div class="poin-latar">
+                <h3>2. Efisiensi Biaya dan Sumber Daya Manusia (SDM)</h3>
+                <p>Meskipun investasi awal drone dan software pengolahan cukup besar, dalam jangka panjang, penggunaan drone untuk proyek skala besar menekan biaya dan SDM. Manfaat: Mengurangi biaya operasional tim survei besar dan menggantikan pekerjaan pengukuran berulang dengan penerbangan drone terotomasi (autopilot).</p>
+            </div>
+
+            <div class="poin-latar">
+                <h3>3. Akurasi dan Resolusi Data yang Tinggi</h3>
+                <p>Drone modern dilengkapi teknologi navigasi presisi seperti GNSS RTK atau PPK. Output: Menghasilkan ortofoto yang sangat detail yang sesuai dengan standar pemetaan bidang tanah skala 1:1.000.</p>
+            </div>
+            
+            <div class="poin-latar">
+                <h3>4. Aksesibilitas Area Sulit dan Risiko Lapangan</h3>
+                <p>Banyak bidang tanah berada di area sulit dijangkau (hutan, rawa-rawa) yang berisiko bagi surveyor. Keunggulan: Drone dapat terbang di atas hambatan tanpa mengorbankan keselamatan operator.</p>
+            </div>
+            
+            <div class="poin-latar">
+                <h3>5. Integrasi Data Geospasial Modern</h3>
+                <p>Data pertanahan menuntut informasi geospasial yang kaya untuk SIG. Data Lengkap: Hasil olahan drone mencakup peta 2D (ortofoto), Model Ketinggian Digital (DEM/DSM), hingga Model 3D.</p>
+            </div>
+        </section>
+        
+        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 51, 102, 0.75), rgba(0, 0, 0, 0));">
+
+        <section id="instruktur-section">
+            <h2>TIM INSTRUKTUR AHLI</h2>
+            <div class="instruktur-grid">
+                
+                <div class="instruktur-card">
+                    <h3>Andrean Yoga Pratama</h3>
+                    <p class="gelar">S.T., M.Eng., Ph.D.</p>
+                    <p>Ahli Utama Pemetaan Fotogrametri. Fokus pada akurasi GNSS RTK/PPK dan integrasi data BPN.</p>
+                </div>
+
+                <div class="instruktur-card">
+                    <h3>Danny Surya Kusuma</h3>
+                    <p class="gelar">S.T., M.Sc.</p>
+                    <p>Spesialis Operasi Penerbangan Drone (RPC DJPU). Fokus pada perencanaan misi area sulit dan keselamatan penerbangan.</p>
+                </div>
+
+                <div class="instruktur-card">
+                    <h3>Septianingrum Cakra Pratama</h3>
+                    <p class="gelar">S.E., M.B.A.</p>
+                    <p>Konsultan Manajemen Proyek dan Legalitas Usaha. Fokus pada aspek bisnis, perizinan drone, dan perencanaan anggaran proyek.</p>
+                </div>
+
+                <div class="instruktur-card">
+                    <h3>Nayaswastika Ratri Paramitha</h3>
+                    <p class="gelar">S.Kom.</p>
+                    <p>Pakar Pengolahan Data Geospasial dan SIG. Fokus pada pemodelan 3D, Ortofoto berkualitas tinggi, dan analisis spasial.</p>
+                </div>
+            </div>
+        </section>
+        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 51, 102, 0.75), rgba(0, 0, 0, 0));">
+
+        <h2 id="menu-judul">PILIH PROGRAM PELATIHAN ANDA</h2>
+        
+        <ul id="pelatihan-menu">
+            <li data-id="dasar"
+                data-title="Pelatihan Dasar Operasi Drone Survei"
+                data-desc="Teori dasar fotogrametri, pengenalan jenis-jenis drone (Fixed-Wing & Multirotor), praktik penerbangan aman, perencanaan misi, dan pengumpulan data."
+                data-price-min="7000000"
+                data-price-max="11000000"
+                data-price-note="Perkiraan harga paket per peserta (termasuk RPC)."
+                data-output="Sertifikat Lisensi Drone Internal PT APJK Aerosurvey Academy."
+                data-target="ASN Kementerian ATR/BPN dan profesional terkait.">
+                <h3>Pelatihan Dasar Operasi Drone Survei</h3>
+                <p>Pengenalan jenis drone, praktik penerbangan aman, perencanaan misi, dan pengumpulan data foto udara.</p>
+            </li>
+            <li data-id="lanjutan"
+                data-title="Pelatihan Lanjutan & Pengolahan Data"
+                data-desc="Fokus pada Ground Control Point (GCP), pengolahan data foto udara (Orthomosaic, DEM, 3D Modeling) menggunakan software profesional (e.g., Pix4D, Agisoft Metashape)."
+                data-price-min="7000000"
+                data-price-max="11000000"
+                data-price-note="Perkiraan harga paket per peserta (termasuk RPC)."
+                data-output="Laporan Proyek Pemetaan."
+                data-target="ASN Kementerian ATR/BPN dan profesional terkait.">
+                <h3>Pelatihan Lanjutan & Pengolahan Data</h3>
+                <p>Mencakup GCP, fotogrametri lanjutan, dan pengolahan data menjadi peta Ortomosaik, DEM, dan Model 3D.</p>
+            </li>
+            <li data-id="rcp"
+                data-title="Bantuan Pengurusan Sertifikasi RPC"
+                data-desc="Menjembatani dan menyiapkan peserta untuk ujian perolehan Remote Pilot Certificate (RPC) dari Direktorat Jenderal Perhubungan Udara (DJPU), termasuk materi uji dan sesi simulasi."
+                data-price-min="1500000"
+                data-price-max="2500000"
+                data-price-note="Estimasi Biaya Pengurusan RPC DJPU (Uji Kompetensi & Administrasi) saja."
+                data-output="Sertifikat RPC dari DJPU (Lisensi Wajib Operasi Drone di Ruang Udara Indonesia)."
+                data-target="Calon Remote Pilot yang membutuhkan legalitas operasi.">
+                <h3>Bantuan Pengurusan Sertifikasi RCP</h3>
+                <p>Pendampingan penuh dari persiapan materi uji hingga perolehan Remote Pilot Certificate (RPC) DJPU.</p>
+            </li>
+            <li data-id="konsultasi"
+                data-title="Konsultasi Aplikasi Lapangan"
+                data-desc="Pendampingan teknis dalam implementasi hasil pelatihan untuk proyek-proyek pertanahan spesifik."
+                data-price-min="N/A"
+                data-price-max="N/A"
+                data-price-note="Harga disesuaikan dengan kompleksitas dan durasi proyek. Hubungi kami untuk penawaran kustom."
+                data-output="N/A"
+                data-target="Institusi atau perusahaan yang menjalankan proyek pertanahan.">
+                <h3>Konsultasi Aplikasi Lapangan</h3>
+                <p>Pendampingan teknis dan solusi terapan untuk implementasi drone dalam proyek-proyek pertanahan spesifik.</p>
+            </li>
+        </ul>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button id="certificate-info-btn" class="main-cta-btn" style="background-color: var(--dark-blue); font-size: 1.1em; padding: 10px 20px;">
+                Tentang Bentuk Sertifikat
+            </button>
+        </div>
+        <p class="footer-cta">Siap menjadi Remote Pilot profesional? Daftar sekarang dan dukung modernisasi layanan pertanahan!</p>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section footer-logo">
+                <h3>APJK AeroSurvey Academy</h3>
+                <p>
+                    Penyedia edukasi dan sertifikasi drone terdepan, berfokus pada modernisasi pengukuran dan pemetaan di sektor pertanahan.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Tautan Cepat</h4>
+                <ul>
+                    <li><a id="workflow-link-footer" href="#">Beranda (Alur Program)</a></li> 
+                    <li><a href="#menu-judul">Katalog Pelatihan</a></li>
+                    <li><a id="about-link-footer">Tentang Kami</a></li>
+                    <li><a id="contact-link-footer">Hubungi Kami</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Kontak Kami</h4>
+                <p>
+                    <span role="img" aria-label="alamat">📍</span> Alamat: Jalan Kasenopaten Nomor 15, Kota Yogyakarta, DI Yogyakarta
+                </p>
+                <p>
+                    <span role="img" aria-label="telepon">📞</span> Telepon: <a href="tel:+6285612384605">085612384605</a>
+                </p>
+                <p>
+                    <span role="img" aria-label="email">✉️</span> Email: <a href="mailto:apjkaerosurveyacademyoffcial@gmail.com">apjkaerosurveyacademyoffcial@gmail.com</a>
+                </p>
+                <p>
+                    <span role="img" aria-label="instagram">📸</span> Instagram: APJK Aerosurvey Academy
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2024 APJK AeroSurvey Academy. Hak Cipta Dilindungi.
+        </div>
+    </footer>
+    
+    <div id="certificateModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close certificate-close">&times;</span>
+            <h3 id="certificate-modal-title">Pilih Jenis Sertifikat</h3>
+            <p style="text-align: center; margin-bottom: 20px;">Pilih jenis sertifikat untuk melihat detail output yang akan Anda peroleh.</p>
+            
+            <div id="certificate-button-container" style="display: flex; flex-direction: column; gap: 15px; text-align: center;">
+                
+                <button class="cert-sub-btn" data-cert-name="Sertifikat Lisensi Drone Internal PT APJK Aerosurvey Academy" data-cert-desc="Diberikan setelah lulus ujian praktik dan teori internal. Sertifikat ini menunjukkan kompetensi operasional drone survei sesuai standar APJK Aerosurvey Academy.">
+                    Sertifikat Lisensi Drone Internal PT APJK Aerosurvey Academy
+                </button>
+                
+                <button class="cert-sub-btn" data-cert-name="Sertifikat Pengolahan Data Pemetaan" data-cert-desc="Diberikan setelah berhasil menyelesaikan proyek akhir pengolahan data foto udara. Sertifikat ini menunjukkan keahlian Anda dalam menghasilkan peta Ortomosaik, DEM, dan Model 3D yang akurat.">
+                    Sertifikat Pengolahan Data Pemetaan
+                </button>
+                
+                <button class="cert-sub-btn" data-cert-name="Sertifikat RPC dari DKPPU" data-cert-desc="Remote Pilot Certificate (RPC) resmi dari Direktorat Kelaikan Udara dan Pengoperasian Pesawat Udara (DKPPU) / DJPU. Ini adalah lisensi wajib untuk mengoperasikan drone secara legal di wilayah udara Indonesia.">
+                    Sertifikat RPC dari DKPPU
+                </button>
+                
+                <button class="cert-sub-btn" data-cert-name="Sertifikat Pelatihan Pemetaan" data-cert-desc="Sertifikat kehadiran/kelulusan untuk program Pelatihan Dasar/Lanjutan. Ini mencakup durasi pelatihan, kurikulum, dan nilai yang diperoleh.">
+                    Sertifikat Pelatihan Pemetaan
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="workflowModal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <span class="close workflow-close">&times;</span>
+            <div class="workflow-timeline">
+                <h3 id="workflow-modal-title">ALUR PROGRAM PELATIHAN</h3>
+                <div class="timeline-container-modal">
+
+                    <div class="timeline-item-modal">
+                        <div class="timeline-content-modal">
+                            <h4>Fase 1: Pembelajaran Materi (Daring Zoom Meeting)</h4>
+                            <p>Peserta menerima materi dasar dan konsep melalui sesi virtual interaktif (Zoom Meeting). Fokus pada pemahaman regulasi dan dasar-dasar fotogrametri.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item-modal">
+                        <div class="timeline-content-modal">
+                            <h4>Fase 2: Pembekalan Teori (Kelas Tatap Muka)</h4>
+                            <p>Pendalaman teori di ruang kelas. Meliputi analisis GNSS RTK/PPK, pengenalan software pengolahan data, dan perencanaan misi penerbangan presisi.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item-modal">
+                        <div class="timeline-content-modal">
+                            <h4>Fase 3: Praktik Lapangan</h4>
+                            <p>Peserta melakukan serangkaian praktik penerbangan dan pengumpulan data di lapangan, termasuk pemasangan Ground Control Point (GCP) dan implementasi misi autopilot.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item-modal">
+                        <div class="timeline-content-modal">
+                            <h4>Fase 4: Ujian Praktik & Lisensi Internal</h4>
+                            <p>Evaluasi praktik penerbangan dan pengolahan data. Peserta yang lulus akan mendapatkan Sertifikat Lisensi Drone Internal APJK AeroSurvey Academy (Ujian Praktik Lisensi Drone).</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item-modal">
+                        <div class="timeline-content-modal">
+                            <h4>Fase 5: Ujian Remote Pilot Certificate (RPC) DKPPU</h4>
+                            <p>Persiapan dan pelaksanaan ujian Remote Pilot Certificate (RPC) yang diselenggarakan oleh Direktorat Kelaikan Udara dan Pengoperasian Pesawat Udara (DKPPU) / DJPU Kemenhub.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="courseModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close course-close">&times;</span>
+            <h3 id="modal-title">Judul Pelatihan</h3>
+            <p id="modal-description">Deskripsi Singkat Pelatihan.</p>
+            
+            <div id="modal-price-container">
+                <p id="modal-price-range">Harga Paket: Rp X.XXX.XXX - Rp Y.XXX.XXX</p>
+                <p id="modal-estimated-cost"></p>
+            </div>
+            
+            <div class="modal-details">
+                <p><strong>Target Output Peserta:</strong></p>
+                <p id="modal-output-text"></p>
+            </div>
+            <div class="modal-details" style="margin-top: 10px;">
+                <p><strong>Target Peserta:</strong></p>
+                <p id="modal-target-text"></p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="contactModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close contact-close">&times;</span>
+            <h3 id="contact-modal-title">Hubungi APJK AeroSurvey Academy</h3>
+            
+            <div class="contact-info">
+                <span role="img" aria-label="office">🏢</span>
+                <p><strong>Nama Kantor:</strong> APJK AeroSurvey Academy</p>
+            </div>
+            
+            <div class="contact-info">
+                <span role="img" aria-label="address">📍</span>
+                <p><strong>Alamat Kantor:</strong> Jalan Kasenopaten Nomor 15, Kota Yogyakarta, Provinsi Daerah Istimewa Yogyakarta</p>
+            </div>
+            
+            <div class="contact-info">
+                <span role="img" aria-label="phone">📞</span>
+                <p><strong>Nomor yang Dapat Dihubungi:</strong> 085612384605</p>
+            </div>
+            
+            <div class="contact-info">
+                <span role="img" aria-label="instagram">📸</span>
+                <p><strong>Instagram:</strong> APJK Aerosurvey Academy</p>
+            </div>
+            
+            <div class="contact-info">
+                <span role="img" aria-label="email">✉️</span>
+                <p><strong>Email:</strong> apjkaerosurveyacademyoffcial@gmail.com</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="aboutModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close about-close">&times;</span>
+            <h3 id="about-modal-title">Tentang APJK AeroSurvey Academy</h3>
+            <p id="about-description">
+                Sebagai penyedia jasa program pelatihan drone yang berdiri sejak 8 September 2023, APJK Aerosurvey Academy didirikan di atas keyakinan bahwa drone adalah kunci untuk mengatasi keterbatasan metode survei terestris. Kami berfokus pada pelatihan teknis yang mampu menghasilkan output data geospasial lengkap—mulai dari ortofoto beresolusi sentimeter hingga model 3D—yang esensial untuk mendukung target ambisius Kementerian ATR/BPN dalam pendaftaran tanah. Dengan menguasai teknologi ini, lulusan kami siap memberikan solusi yang menjamin kecepatan, akurasi, dan efisiensi tertinggi di lapangan.
+            </p>
+        </div>
+    </div>
+    
+    <div id="loginModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close login-close">&times;</span>
+            <h3 id="login-modal-title">Masuk ke Akun Anda</h3>
+            <form id="loginForm" onsubmit="alert('Fungsi Login Belum Diimplementasikan!'); return false;">
+                <div class="form-group">
+                    <label for="username">Email/Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Kata Sandi</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+                <p class="forgot-password">Lupa Kata Sandi? | <a href="#" onclick="alert('Pendaftaran sedang dalam pengembangan.'); return false;">Daftar Akun Baru</a></p>
+            </form>
+        </div>
+    </div>
+    
+    <a href="https://wa.me/6285612384605" class="whatsapp-float" target="_blank" rel="noopener noreferrer" style="position: fixed; width: 60px; height: 60px; bottom: 40px; right: 40px; background-color: #25d366; color: #FFF; border-radius: 50px; text-align: center; font-size: 30px; box-shadow: 2px 2px 3px #999; z-index: 1000; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: transform 0.3s;">
+        💬
+    </a>
+
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+
+    <script>
+        // Fungsi untuk format angka menjadi Rupiah
+        function formatRupiah(angka) {
+            if (angka === "N/A" || !angka) return "Hubungi Kami";
+            var number_string = String(angka).replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            return 'Rp ' + rupiah;
+        }
+
+        // --- Variabel Modal & Navigasi ---
+        var courseModal = document.getElementById("courseModal");
+        var courseClose = document.getElementsByClassName("course-close")[0];
+        var menuItems = document.getElementById("pelatihan-menu").getElementsByTagName("li");
+
+        var contactModal = document.getElementById("contactModal");
+        var contactLink = document.getElementById("contact-link");
+        var contactClose = document.getElementsByClassName("contact-close")[0];
+        
+        var aboutModal = document.getElementById("aboutModal");
+        var aboutLink = document.getElementById("about-link");
+        var aboutClose = document.getElementsByClassName("about-close")[0];
+        
+        var loginModal = document.getElementById("loginModal");
+        var loginLinkDesktop = document.getElementById("login-link-desktop"); 
+        var loginLinkMobile = document.getElementById("login-link-mobile");
+        var loginClose = document.getElementsByClassName("login-close")[0];
+        
+        // --- Modal Alur Program BARU ---
+        var workflowModal = document.getElementById("workflowModal");
+        var workflowLink = document.getElementById("workflow-link"); // Link Beranda di navigasi utama
+        var workflowClose = document.getElementsByClassName("workflow-close")[0];
+        
+        // --- Modal Sertifikat BARU ---
+        var certificateModal = document.getElementById("certificateModal");
+        var certificateInfoBtn = document.getElementById("certificate-info-btn");
+        var certificateClose = document.getElementsByClassName("certificate-close")[0];
+        var certSubButtons = document.querySelectorAll(".cert-sub-btn");
+        
+        // --- Tautan Footer Baru ---
+        var contactLinkFooter = document.getElementById("contact-link-footer");
+        var aboutLinkFooter = document.getElementById("about-link-footer");
+        var workflowLinkFooter = document.getElementById("workflow-link-footer"); // Link Beranda di footer
+        
+        // --- Variabel Loading ---
+        var loadingOverlay = document.getElementById("loadingOverlay");
+
+
+        // --- FUNGSI Tampilkan Loading dan Buka Modal ---
+        function showLoadingAndOpenModal(modalElement) {
+            
+            // 1. Tampilkan loading overlay
+            loadingOverlay.style.display = "flex";
+
+            // 2. Tunda pembukaan modal untuk simulasi loading (500ms)
+            setTimeout(function() {
+                
+                // 3. Sembunyikan loading
+                loadingOverlay.style.display = "none";
+                
+                // 4. Tampilkan modal
+                modalElement.style.display = "block";
+            }, 500); 
+        }
+
+        // --- Variabel & Logika Navigasi Mobile (Hamburger Menu) ---
+        var menuToggle = document.getElementById("menuToggle");
+        var navLinks = document.getElementById("navLinks");
+        
+        // Logika Navigasi Mobile
+        if(menuToggle && navLinks) {
+            menuToggle.onclick = function() {
+                navLinks.classList.toggle('open');
+                if(window.innerWidth <= 768 && loginLinkDesktop) {
+                    // Sembunyikan tombol desktop saat menu mobile terbuka
+                    loginLinkDesktop.style.display = navLinks.classList.contains('open') ? 'none' : 'block';
+                }
+            }
+            
+            // Sembunyikan menu mobile saat link diklik
+            var allNavLinks = navLinks.querySelectorAll('a');
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    // Hanya tutup jika menu terbuka dan bukan link yang bertindak sebagai tombol (seperti login)
+                    if (navLinks.classList.contains('open') && link.getAttribute('href') !== '#') {
+                         navLinks.classList.remove('open');
+                    }
+                });
+            });
+        }
+
+        
+        // 1. Logika untuk Modal Pelatihan (Detail Item)
+        for (let i = 0; i < menuItems.length; i++) {
+            menuItems[i].onclick = function() {
+                var title = this.getAttribute('data-title');
+                var desc = this.getAttribute('data-desc');
+                var priceMin = this.getAttribute('data-price-min');
+                var priceMax = this.getAttribute('data-price-max');
+                var priceNote = this.getAttribute('data-price-note');
+                var output = this.getAttribute('data-output');
+                var target = this.getAttribute('data-target');
+
+                document.getElementById("modal-title").textContent = title;
+                document.getElementById("modal-description").textContent = desc;
+                document.getElementById("modal-output-text").textContent = output;
+                document.getElementById("modal-target-text").textContent = target;
+
+                var priceRangeElement = document.getElementById("modal-price-range");
+                var priceNoteElement = document.getElementById("modal-estimated-cost");
+
+                if (priceMin === "N/A" || priceMax === "N/A") {
+                    priceRangeElement.textContent = "Harga: Hubungi Kami";
+                } else if (priceMin === priceMax) {
+                     priceRangeElement.textContent = "Harga Paket: " + formatRupiah(priceMin);
+                } else {
+                     priceRangeElement.textContent = "Harga Paket: " + formatRupiah(priceMin) + " - " + formatRupiah(priceMax);
+                }
+                
+                priceNoteElement.textContent = priceNote;
+
+                showLoadingAndOpenModal(courseModal);
+            }
+        }
+        courseClose.onclick = function() { courseModal.style.display = "none"; }
+        
+        // 2. Logika untuk Modal Contact (Header dan Footer)
+        contactLink.onclick = function() { showLoadingAndOpenModal(contactModal); }
+        contactClose.onclick = function() { contactModal.style.display = "none"; }
+        if(contactLinkFooter) {
+            contactLinkFooter.onclick = function() { showLoadingAndOpenModal(contactModal); }
+        }
+        
+        // 3. Logika untuk Modal Tentang Kami (Header dan Footer)
+        aboutLink.onclick = function() { showLoadingAndOpenModal(aboutModal); }
+        aboutClose.onclick = function() { aboutModal.style.display = "none"; }
+        if(aboutLinkFooter) {
+            aboutLinkFooter.onclick = function() { showLoadingAndOpenModal(aboutModal); }
+        }
+        
+        // 4. Logika untuk Modal Login
+        if(loginLinkDesktop) {
+            loginLinkDesktop.onclick = function(e) { 
+                e.preventDefault(); 
+                showLoadingAndOpenModal(loginModal);
+            }
+        }
+        if(loginLinkMobile) {
+            loginLinkMobile.onclick = function(e) { 
+                e.preventDefault(); 
+                showLoadingAndOpenModal(loginModal);
+            }
+        }
+        loginClose.onclick = function() { loginModal.style.display = "none"; }
+        
+        // 5. Logika untuk Modal Alur Program (Menggunakan link Beranda)
+        if(workflowLink) {
+            workflowLink.onclick = function(e) { 
+                e.preventDefault(); 
+                showLoadingAndOpenModal(workflowModal); 
+            }
+        }
+        workflowClose.onclick = function() { workflowModal.style.display = "none"; }
+        if(workflowLinkFooter) {
+            workflowLinkFooter.onclick = function(e) { 
+                e.preventDefault(); 
+                showLoadingAndOpenModal(workflowModal); 
+            }
+        }
+        
+        // 6. Logika untuk Modal Bentuk Sertifikat BARU
+        if(certificateInfoBtn) {
+            certificateInfoBtn.onclick = function() {
+                showLoadingAndOpenModal(certificateModal); 
+            }
+        }
+        certificateClose.onclick = function() { certificateModal.style.display = "none"; }
+        
+        // Logika untuk Tombol Sertifikat di dalam Modal (Menampilkan Alert)
+        certSubButtons.forEach(button => {
+            button.onclick = function() {
+                var name = this.getAttribute('data-cert-name');
+                var desc = this.getAttribute('data-cert-desc');
+                alert("Jenis Sertifikat: " + name + "\n\nDeskripsi:\n" + desc);
+                certificateModal.style.display = "none"; // Tutup modal setelah alert
+            }
+        });
+
+
+        // 7. Logika Menutup Semua Modal Ketika Klik di Luar Konten Modal
+        window.onclick = function(event) {
+            if (event.target == courseModal) { courseModal.style.display = "none"; }
+            if (event.target == contactModal) { contactModal.style.display = "none"; }
+            if (event.target == aboutModal) { aboutModal.style.display = "none"; }
+            if (event.target == loginModal) { loginModal.style.display = "none"; }
+            if (event.target == workflowModal) { workflowModal.style.display = "none"; } 
+            if (event.target == certificateModal) { certificateModal.style.display = "none"; } // Tambahkan modal baru
+        }
+        
+        // Logika tambahan untuk tampilan login desktop/mobile saat resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                if(loginLinkDesktop) loginLinkDesktop.style.display = 'none';
+            } else {
+                if(loginLinkDesktop) loginLinkDesktop.style.display = 'block';
+                if(navLinks) navLinks.classList.remove('open');
+            }
+        });
+        // Inisialisasi tampilan di awal load
+        if (window.innerWidth <= 768) {
+            if(loginLinkDesktop) loginLinkDesktop.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
